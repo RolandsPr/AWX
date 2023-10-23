@@ -3,7 +3,11 @@
   become: yes
 
   tasks:
-
+    - name: Create a backup of the server
+      command: cp -a /root/backup-{{ ansible_date_time.date }}
+      args:
+        creates: /root/backup-{{ ansible_date_time.date }}
+        
     - name: Update AlmaLinux 9
       dnf:
         name: '*'
