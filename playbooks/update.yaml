@@ -24,7 +24,7 @@
         - ansible_os_family == "Debian"
         - ansible_distribution == "Ubuntu"
         
-    - name: Install system updates for alamlinux systems
+    - name: Install system updates for almalinux systems
       apt:
         name: '*'
         state: latest
