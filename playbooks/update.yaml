@@ -4,8 +4,7 @@
 
   tasks:
     - name: Create a backup of important files
-      command: "tar -cvzf /root/backup_{{ ansible_date_time.iso8601 }}.tar.gz /root"
-      register: backup_result
+      command: "tar czf /root/backup/{{ ansible_date_time.date }}_backup.tar.gz /"
       ignore_errors: yes
         
     - name: Update AlmaLinux 9
