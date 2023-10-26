@@ -5,8 +5,8 @@
   tasks:
     - name: Backup important files
       synchronize:
-        src: "/root"
-        dest: "/root/backup/backup-{{ ansible_date_time.iso8601 }}.tar.gz/"
+        src: "/etc"
+        dest: "/root/backup/backup_{{ ansible_date_time.iso8601 }}.tar.gz"
         archive: yes
         
     - name: Update AlmaLinux 9
