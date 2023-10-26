@@ -3,12 +3,6 @@
   become: yes
 
   tasks:
-    - name: Backup important files
-      synchronize:
-        src: "/etc"
-        dest: "/root/backup/backup_{{ ansible_date_time.iso8601 }}.tar.gz"
-        archive: yes
-        
     - name: Update AlmaLinux 9
       dnf:
         name: '*'
