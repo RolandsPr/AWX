@@ -3,10 +3,16 @@
   become: yes
 
   tasks:
-    - name: Create a backup of important files
-      command: "tar czf /root/backup/{{ ansible_date_time.date }}_backup.tar.gz /"
-      ignore_errors: yes
-      
+    - name: Create a backup directory
+      file:
+        path: /root/backup
+        state: directory
+    - name: Backup important files
+      synchronize:
+        src: "/etc/"
+        dest: "/root/backup/backup-{{ ansible_date_time.iso8601 }}/"
+        archive: yes
+        
     - name: Update AlmaLinux 9
       dnf:
         name: '*'
