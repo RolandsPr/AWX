@@ -5,7 +5,7 @@
   tasks:
     - name: Backup important files
       synchronize:
-        src: "/etc/"
+        src: "/root"
         dest: "/root/backup/backup-{{ ansible_date_time.iso8601 }}.tar.gz/"
         archive: yes
         
