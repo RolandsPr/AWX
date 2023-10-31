@@ -3,6 +3,12 @@
   become: yes
 
   tasks:
+    - name: Refresh repository metadata
+      dnf:
+        name: '*'
+        state: present
+      become: yes
+        
     - name: Update AlmaLinux 9
       dnf:
         name: '*'
