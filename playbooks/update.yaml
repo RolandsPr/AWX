@@ -3,10 +3,14 @@
   become: yes
 
   tasks:
-    - name: Update AlmaLinux 9
-      dnf:
+    - name: Perform a full system update
+      yum:
         name: '*'
         state: latest
+      register: update_result
+    - name: Show the update result
+      debug:
+        var: update_result
         
     - name: Reboot remote server
       reboot:
