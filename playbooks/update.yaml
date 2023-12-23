@@ -1,20 +1,31 @@
 ---
-- name: Update and upgrade Ubuntu packages
+- name: Update and upgrade packages
   hosts: all
   become: yes
+  become_user: root
   tasks:
+    # Update package cache
     - name: Update package cache
-      apt:
+      yum:
         update_cache: yes
+        when: ansible_distribution == "AlmaLinux"
 
+    # Upgrade all packages
     - name: Upgrade all packages
       apt:
         upgrade: yes
+        when: ansible_distribution == "Ubuntu"
+
+    - name: Upgrade all packages
+      dnf:
+        upgrade: yes
+        when: ansible_distribution == "AlmaLinux" or ansible_distribution == "Rocky"
 
 - name: Reboot the server
   hosts: all
   become: yes
   tasks:
+    # Reboot the server
     - name: Reboot the server
       reboot:
         reboot_timeout: 3600
