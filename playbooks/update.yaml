@@ -19,20 +19,10 @@
       reboot:
         reboot_timeout: 3600
 
-- name: Relogin the user after reboot
+- name: Log the user back in after reboot
   hosts: all
   become: yes
   tasks:
-    - name: Get current user
-      shell: whoami
-      register: current_user
-
-    - name: Get ansible user
-      ansible.builtin.user:
-        name: "{{ ansible_user }}"
-        state: present
-        shell: /bin/bash
-        createhome: yes
-
-    - name: Log the user in after reboot
-      shell: su - "{{ current_user.stdout }}"
+    - name: Log in as the default user
+      shell: "sudo su -"
+      become_user: root
