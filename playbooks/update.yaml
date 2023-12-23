@@ -19,9 +19,14 @@
       reboot:
         reboot_timeout: 3600
 
-- name: Login as user after reboot
+- name: Log the user back in after reboot
   hosts: all
   become: yes
   tasks:
-    - name: Login as user '{{ ansible_user }}'
-      shell: "su - {{ ansible_user }}"
+    - name: Execute command to log the user back in after reboot
+      shell: |
+        su - {{ ansible_user }} << EOF
+        export DISPLAY=:0
+        gnome-session-ctl restart
+        EOF
+      become_user: "{{ ansible_user }}"
