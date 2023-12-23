@@ -19,10 +19,9 @@
       reboot:
         reboot_timeout: 3600
 
-- name: Log the user back in after reboot
+- name: Login as user after reboot
   hosts: all
   become: yes
   tasks:
-    - name: Log in as the default user
-      shell: "sudo su -"
-      become_user: root
+    - name: Login as user '{{ ansible_user }}'
+      shell: "su - {{ ansible_user }}"
