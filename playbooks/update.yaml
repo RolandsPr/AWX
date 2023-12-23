@@ -1,5 +1,5 @@
 ---
-- name: Update Ubuntu packages and log in user after reboot
+- name: Update Ubuntu packages
   hosts: all
   become: yes
   tasks:
@@ -13,8 +13,9 @@
 
   - name: Reboot the server
     reboot:
-      reboot_timeout: 600
 
-  - name: Log in the user after reboot
-    shell: "sudo su - {{ansible_user}}"
-  become_user: true
+  - name: Login after reboot
+    become: yes
+    user: "{{ ansible_user }}"
+    connection: ssh
+    shell: "echo 'Logged in!'"
