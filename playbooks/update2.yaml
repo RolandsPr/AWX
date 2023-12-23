@@ -1,18 +1,21 @@
 ---
 - name: Update AlmaLinux server to latest version
   hosts: all
-  become: true
+  connection: network_cli
+  become: yes
+  gather_facts: no
   tasks:
-    # Update the system
-    - name: Update AlmaLinux packages
-      yum:
-        update_cache: yes
-        upgrade: yes
-        name: '*'
-        state: latest
-        exclude: 'kernel*'
+  - name: Check if AlmaLinux is up to date
+    shell: dnf --quiet --refresh --assumeyes list updates
+    register: updates
+    failed_when: updates.rc != 0
 
-    # Reboot the server to apply the updates
-    - name: Reboot the server
-      reboot:
-        reboot_timeout: 600
+  - name: Update AlmaLinux to latest version
+    shell: dnf --quiet --refresh --assumeyes upgrade
+    register: upgrade
+    failed_when: upgrade.rc != 0
+
+  - name: Reboot AlmaLinux server
+    shell: reboot
+    name: Reboot
+    when: upgrade.rc == 0
