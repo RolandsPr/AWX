@@ -1,19 +1,17 @@
 ---
-- name: Update AlmaLinux server
-  hosts: all
+- hosts: all
   become: yes
-  become_method: sudo
+
   tasks:
-    - name: Ensure dnf is up to date
+    - name: Perform a full system update
       yum:
-        update_cache: yes
+        name: '*'
         state: latest
-
-    - name: Update AlmaLinux to latest version
-      yum:
-        update: yes
-        state: latest
-
-    - name: Reboot AlmaLinux server
+      register: update_result
+    - name: Show the update result
+      debug:
+        var: update_result
+        
+    - name: Reboot remote server
       reboot:
-        reboot_timeout: 600
+            reboot_timeout: 300
