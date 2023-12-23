@@ -1,20 +1,23 @@
 ---
-- name: Update and upgrade Ubuntu packages
+- name: Update AlmaLinux server to latest version
   hosts: all
   become: yes
+
   tasks:
-    - name: Update package cache
-      apt:
+
+    - name: Update AlmaLinux package repositories
+      yum:
         update_cache: yes
 
-    - name: Upgrade all packages
-      apt:
-        upgrade: yes
+    - name: Install the latest AlmaLinux package updates
+      yum:
+        update: yes
+        name: '*'
+        state: latest
+        enablerepo: '*'
 
-- name: Reboot the server
-  hosts: all
-  become: yes
-  tasks:
-    - name: Reboot the server
+    - name: Reboot the server to apply updates
       reboot:
-        reboot_timeout: 3600
+        reboot_timeout: 600
+        reboot_required: yes
+      when: ansible_status.rc == 0
