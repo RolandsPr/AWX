@@ -1,16 +1,18 @@
 ---
-- name: Update AlmaLinux server
+- name: Update AlmaLinux server to latest version
   hosts: all
   become: true
-  become_user: root
   tasks:
-    - name: Update system packages
+    # Update the system
+    - name: Update AlmaLinux packages
       yum:
         update_cache: yes
-        packages: '*'
+        upgrade: yes
+        name: '*'
         state: latest
-        disable_gpg_check: yes
+        exclude: 'kernel*'
 
-    - name: Reboot AlmaLinux server
+    # Reboot the server to apply the updates
+    - name: Reboot the server
       reboot:
         reboot_timeout: 600
