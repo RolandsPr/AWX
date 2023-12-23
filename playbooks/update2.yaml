@@ -1,17 +1,23 @@
 ---
-- hosts: all
-  become: yes
-
+- name: Update AlmaLinux server to latest version
+  become: true
+  hosts: all
   tasks:
-    - name: Perform a full system update
-      yum:
-        name: '*'
-        state: latest
-      register: update_result
-    - name: Show the update result
-      debug:
-        var: update_result
-        
-    - name: Reboot remote server
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      become_user: root
+    - name: Upgrade all packages
+      apt:
+        upgrade: yes
+        autoremove: yes
+      become_user: root
+
+- name: Reboot AlmaLinux server
+  become: true
+  hosts: all
+  tasks:
+    - name: Reboot the server
       reboot:
-            reboot_timeout: 300
+        reboot_timeout: 600
+        force: yes
