@@ -1,20 +1,17 @@
 ---
-- name: Update and upgrade Ubuntu packages
-  hosts: all
+- hosts: all
   become: yes
-  tasks:
-    - name: Update package cache
-      apt:
-        update_cache: yes
 
-    - name: Upgrade all packages
-      apt:
-        upgrade: yes
-
-- name: Reboot the server
-  hosts: all
-  become: yes
   tasks:
-    - name: Reboot the server
+    - name: Perform a full system update
+      yum:
+        name: '*'
+        state: latest
+      register: update_result
+    - name: Show the update result
+      debug:
+        var: update_result
+        
+    - name: Reboot remote server
       reboot:
-        reboot_timeout: 3600
+            reboot_timeout: 300
