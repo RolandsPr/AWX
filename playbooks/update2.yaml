@@ -1,15 +1,19 @@
 ---
-- name: Update and reboot AlmaLinux server
+- name: Update AlmaLinux server
   hosts: all
-  become: true
+  become: yes
+  become_method: sudo
   tasks:
-    - name: Update AlmaLinux packages
+    - name: Ensure dnf is up to date
       yum:
         update_cache: yes
-        packages: '*'
+        state: latest
+
+    - name: Update AlmaLinux to latest version
+      yum:
+        update: yes
         state: latest
 
     - name: Reboot AlmaLinux server
       reboot:
-        reboot_timeout: 3600
-        force: yes
+        reboot_timeout: 600
