@@ -1,0 +1,15 @@
+---
+- name: Update and reboot AlmaLinux server
+  hosts: all
+  become: true
+  tasks:
+    - name: Update AlmaLinux packages
+      yum:
+        update_cache: yes
+        packages: '*'
+        state: latest
+
+    - name: Reboot AlmaLinux server
+      reboot:
+        reboot_timeout: 3600
+        force: yes
