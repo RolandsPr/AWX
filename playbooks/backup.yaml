@@ -3,7 +3,7 @@
   hosts: 192.168.0.205
   tasks:
     - name: Get the current date
-      shell: date +%Y%m%d
+      shell: date +%Y%m%d%H%M
       register: backup_date
 
     - name: Create a backup file
