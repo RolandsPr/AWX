@@ -1,31 +1,24 @@
 ---
-- name: Update Ubuntu machines
+- name: Update and restart Ubuntu machines
   hosts: all
   become: yes
   tasks:
-  - name: Update package lists
-    apt:
-      update_cache: yes
-      force_apt_get: yes
-    become_verbose: yes
+    - name: Update Ubuntu packages
+      apt:
+        update_cache: true
+        upgrade: yes
+        force_yes: yes
+        verbose: yes
+    - name: Restart restarted services
+      service:
+        name: "{{ item }}"
+        state: restarted
+        enabled: yes
+      with_items:
+        - sshd
+        - network-manager
+      register: restart_results
 
-  - name: Upgrade installed packages
-    apt:
-      upgrade: yes
-      autoclean: yes
-      autoremove: yes
-    become_verbose: yes
-
-  - name: Restart all services
-    service:
-      name: latest
-      state: restarted
-    become_verbose: yes
-
-- name: Display updated packages
-  hosts: all
-  become: yes
-  tasks:
-  - name: Get updated package list
-    shell: apt list --installed --upgradable
-    become_verbose: yes
+    - name: Display restart results
+      debug:
+        msg: "{{ restart_results }}"
