@@ -1,0 +1,15 @@
+---
+- name: Create a backup of teksts.txt
+  hosts: all
+  tasks:
+    - name: Get the current date
+      shell: date +%Y%m%d
+      register: backup_date
+      
+    - name: Create a backup file
+      copy:
+        src: /faili/teksts
+        dest: /backup/teksts -{{ backup_date.stdout }}
+        owner: root
+        group: root
+        mode: 0644
