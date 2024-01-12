@@ -6,16 +6,11 @@
       shell: date +%Y%m%d
       register: backup_date
 
-    - name: Create a backup directory
-      file:
-        path: /backups
-        state: directory
-
     - name: Create a backup file
       copy:
         src: faili/teksts
         remote_src: yes
-        dest: /backups/teksts.txt-{{ backup_date.stdout }}
+        dest: /backup/teksts-{{ backup_date.stdout }}
         owner: root
         group: root
         mode: 0644
