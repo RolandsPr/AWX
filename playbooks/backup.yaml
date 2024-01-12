@@ -1,6 +1,6 @@
 ---
 - name: Create a backup of teksts.txt
-  hosts: all
+  hosts: 192.168.0.205
   tasks:
     - name: Get the current date
       shell: date +%Y%m%d
