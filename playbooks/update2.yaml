@@ -1,30 +1,31 @@
 ---
-- name: Update and restart Ubuntu machines
-  hosts: ubuntu_machines
+- name: Update Ubuntu machines
+  hosts: all
+  become: yes
   tasks:
-  - name: Update system packages
+  - name: Update package lists
     apt:
       update_cache: yes
+      force_apt_get: yes
+    become_verbose: yes
+
+  - name: Upgrade installed packages
+    apt:
       upgrade: yes
-      force: yes
-    become: yes
+      autoclean: yes
+      autoremove: yes
+    become_verbose: yes
 
-  - name: Restart services after update
+  - name: Restart all services
     service:
-      name: "{{ item }}"
+      name: "*"
       state: restarted
-    with_items:
-      - rsyslog
-      - nginx
-      - mysql
-    become: yes
+    become_verbose: yes
 
-  - name: Display a verbose update report
-    shell: apt-cache policy | grep "^Installed"
-    become: yes
-    register: update_report
-
-  - name: Print verbose update report
-    debug:
-      var: update_report.stdout
-    become: no
+- name: Display updated packages
+  hosts: all
+  become: yes
+  tasks:
+  - name: Get updated package list
+    shell: apt list --installed --upgradable
+    become_verbose: yes
