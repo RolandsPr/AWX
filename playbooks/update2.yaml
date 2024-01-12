@@ -7,18 +7,19 @@
       apt:
         update_cache: true
         upgrade: yes
-        force_yes: yes
-        verbose: yes
-    - name: Restart restarted services
-      service:
-        name: "{{ item }}"
-        state: restarted
-        enabled: yes
-      with_items:
-        - sshd
-        - network-manager
-      register: restart_results
 
+ # Print verbose output
+  - name: Print verbose output
+    debug:
+      msg: "{{ apt_output }}"
+      when: apt_result.changed
+
+  # Restart services after update
+    service:
+      name: "{{ item }}"
+      state: restarted
+      enabled: yes
+    with_items: "{{ update_result.results | flatten('items') | map(attribute='service') | unique }}"
     - name: Display restart results
       debug:
         msg: "{{ restart_results }}"
