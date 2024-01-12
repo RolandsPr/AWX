@@ -1,25 +1,24 @@
 ---
-- name: Update and restart Ubuntu machines
+- name: Update Ubuntu machines
   hosts: all
   become: yes
   tasks:
-    - name: Update Ubuntu packages
-      apt:
-        update_cache: true
-        upgrade: yes
+  - name: Update system packages
+    apt:
+      update_cache: yes
+      upgrade: yes
+      autoremove: yes
+    register: updated_packages
 
- # Print verbose output
-  - name: Print verbose output
+  - name: Print updated packages
     debug:
-      msg: "{{ apt_output }}"
-      when: apt_result.changed
+      var: updated_packages.stdout_lines
 
-  # Restart services after update
+  - name: Restart services
     service:
-      name: "{{ item }}"
+      name: "{{ service_name }}"
       state: restarted
-      enabled: yes
-    with_items: "{{ update_result.results | flatten('items') | map(attribute='service') | unique }}"
-    - name: Display restart results
-      debug:
-        msg: "{{ restart_results }}"
+    with_items:
+      - nginx
+      - httpd
+      - mysql
