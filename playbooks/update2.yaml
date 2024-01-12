@@ -1,14 +1,30 @@
 ---
-- name: Update AlmaLinux Server to Latest Version
-  hosts: all
-  become: true
+- name: Update and restart Ubuntu machines
+  hosts: ubuntu_machines
   tasks:
-    - name: Update AlmaLinux packages
-      yum:
-        name: "*"
-        state: latest
-        update_cache: yes
+  - name: Update system packages
+    apt:
+      update_cache: yes
+      upgrade: yes
+      force: yes
+    become: yes
 
-    - name: Reboot AlmaLinux Server
-      reboot:
-        reboot_timeout: 600
+  - name: Restart services after update
+    service:
+      name: "{{ item }}"
+      state: restarted
+    with_items:
+      - rsyslog
+      - nginx
+      - mysql
+    become: yes
+
+  - name: Display a verbose update report
+    shell: apt-cache policy | grep "^Installed"
+    become: yes
+    register: update_report
+
+  - name: Print verbose update report
+    debug:
+      var: update_report.stdout
+    become: no
