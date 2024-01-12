@@ -10,7 +10,7 @@
       copy:
         src: faili/teksts
         remote_src: yes
-        dest: /backup/teksts-{{ backup_date.stdout }}
+        dest: backup/teksts-{{ backup_date.stdout }}
         owner: root
         group: root
         mode: 0644
