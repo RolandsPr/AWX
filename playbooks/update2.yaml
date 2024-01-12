@@ -2,6 +2,7 @@
 - name: Update Ubuntu machines
   hosts: all
   become: yes
+  ignore_unreachable: yes
   tasks:
   - name: Update system packages
     apt:
@@ -14,11 +15,11 @@
     debug:
       var: updated_packages.stdout_lines
 
-  - name: Restart services
-    service:
-      name: "{{ service_name }}"
-      state: restarted
-    with_items:
-      - nginx
-      - httpd
-      - mysql
+- name: Reboot the server
+  hosts: all
+  become: yes
+  ignore_unreachable: yes
+  tasks:
+    - name: Reboot the server
+      reboot:
+        reboot_timeout: 3600
