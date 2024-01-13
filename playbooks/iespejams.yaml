@@ -8,6 +8,8 @@
       file:
         path: /var/lib/mysql/backup
         state: directory
-        
-    - name: Create MySQL database backup
-      command: mysqldump -u rolands -p tests10 > backup/tests.sql
+    - name: Dump database
+      community.mysql.mysql_db:
+        state: dump
+        name: tests10
+        target: /backup/tests11.sql
