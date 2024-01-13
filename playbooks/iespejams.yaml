@@ -9,7 +9,4 @@
         path: /var/lib/mysql/backup
         state: directory
     - name: Dump database
-      community.mysql.mysql_db:
-        state: dump
-        name: tests10
-        target: /backup/tests11.sql
+      shell: "mysqldump -u rolands tests10 > backup/tests12.sql"
