@@ -16,7 +16,7 @@
         mode: 0755
 
     - name: Backup MySQL database
-      command: mysqldump -u root -p "{{ database_name }}" > "{{ backup_directory }}/{{ database_name }}.sql"
+      command: /var/lib/mysql/"{{ database_name }}" > "{{ backup_directory }}/{{ database_name }}.sql"
       register: backup_result
 
     - name: Check backup results
