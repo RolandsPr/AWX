@@ -1,10 +1,8 @@
 ---
-- hosts: 192.168.0.205
-  become: true
-  vars:
-    database_name: tests10
-    backup_file: /var/lib/mysql/backup/"{{ database_name }}".sql
-
+- name: Create MySQL database backup
+  hosts: 192.168.0.205
+  become: yes
   tasks:
-    - name: Restore MySQL database
-      command: sudo mysql -u root -p "{{ database_name }}" < "{{ backup_file }}"
+
+    - name: Restore database
+      shell: "mysql -u rolands tests10 < backup/tests10.sql"
