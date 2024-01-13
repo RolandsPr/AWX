@@ -10,7 +10,7 @@
         state: directory
         
     - name: Create MySQL database backup
-      command: sudo mysqldump -u root -p tests10 > tests - "+%H-%M-%d-%m-%y".sql
+      command: sudo mysqldump -u root -p tests10 > /var/lib/mysql/backup/tests - "+%H-%M-%d-%m-%y".sql
 
     - name: Start MySQL service
       service:
