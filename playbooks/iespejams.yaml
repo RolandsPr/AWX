@@ -2,18 +2,23 @@
 - name: Create MySQL database backup
   hosts: 192.168.0.205
   become: yes
-  tasks:
-    - name: Backup MySQL database
-      command: mysqldump -u root -p tests10 > /tmp/tests10.sql
+  vars:
+    database_name: tests10
+    backup_directory: /var/lib/mysql/backup
 
-    - name: Copy backup to remote server
-      copy:
-        src: /tmp/tests10.sql
-        dest: /srv/backups/tests10.sql
-        remote_src: yes
-        
-  handlers:
-    - name: Restart MySQL server
-      service:
-        name: mysql
-        state: restarted
+  tasks:
+    - name: Create the backup directory
+      file:
+        path: "{{ backup_directory }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Backup MySQL database
+      command: mysqldump -u root -p "{{ database_name }}" > "{{ backup_directory }}/{{ database_name }}.sql"
+      register: backup_result
+
+    - name: Check backup results
+      fail: msg="{{ backup_result.stderr }}"
+      when: backup_result.rc != 0
