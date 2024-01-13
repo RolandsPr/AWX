@@ -9,7 +9,7 @@
   tasks:
     - name: Create backup file
       copy:
-        content: "{{ lookup('template', './db_backup.sql') }}"
+        src: "/var/lib/mysql/{{ db_name }}.dump.gz"
         dest: "{{ backup_dir }}/{{ db_name }}_backup.sql"
         
   handlers:
