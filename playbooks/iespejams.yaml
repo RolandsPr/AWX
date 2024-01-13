@@ -10,9 +10,4 @@
         state: directory
         
     - name: Create MySQL database backup
-      command: mysqldump -u rolands -p tests10 > backup/tests - "+%H-%M-%d-%m-%y".sql
-
-    - name: Start MySQL service
-      service:
-        name: mysql
-        state: started
+      command: mysqldump -u rolands -p tests10 > backup/tests.sql
