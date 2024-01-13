@@ -14,7 +14,7 @@
         state: directory
 
     - name: Backup the tests10 database
-      mysqldump:
+      mysql_dump:
         database: tests10
         target: /var/lib/mysql/backup/tests10-$(date +%Y-%m-%d-%H-%M).sql
 
