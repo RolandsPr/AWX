@@ -3,11 +3,7 @@
   hosts: 192.168.0.205
   become: yes
   tasks:
-    - name: Stop MySQL service
-      service:
-        name: mysql
-        state: stopped
-
+  
     - name: Create a backup directory
       file:
         path: /var/lib/mysql/backup
