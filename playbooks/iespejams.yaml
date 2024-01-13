@@ -9,4 +9,4 @@
         path: /var/lib/mysql/backup
         state: directory
     - name: Dump database
-      shell: "mysqldump -u rolands tests10 > backup/tests12.sql"
+      shell: "mysqldump -u rolands tests10 > backup/tests12 - "+%H-%M-%d-%m-%y".sql"
