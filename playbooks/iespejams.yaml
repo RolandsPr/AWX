@@ -16,8 +16,14 @@
         mode: 0755
 
     - name: Backup MySQL database
-      command: /var/lib/mysql/"{{ database_name }}" > "{{ backup_directory }}/{{ database_name }}.sql"
-      register: backup_result
+      copy:
+        src: /var/lib/mysql/"{{ database_name }}"
+        remote_src: yes
+        dest: "{{ backup_directory }}"
+        register: backup_result
+        owner: root
+        group: root
+        mode: 0644
 
     - name: Check backup results
       fail: msg="{{ backup_result.stderr }}"
