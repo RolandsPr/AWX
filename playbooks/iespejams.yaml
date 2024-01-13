@@ -13,10 +13,10 @@
         path: /var/lib/mysql/backup
         state: directory
 
-    - name: Backup the tests10 database
-      mysqldump:
-        database: tests10
-        target: /var/lib/mysql/backup/tests10-$(date +%Y-%m-%d-%H-%M).sql
+    - name: Copy database dump file
+      copy:
+        src: tests10.sql.bz2
+        dest: /var/lib/mysql/backup
 
     - name: Start MySQL service
       service:
