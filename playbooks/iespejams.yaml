@@ -8,5 +8,8 @@
       file:
         path: /var/lib/mysql/backup
         state: directory
+        shell: date +%H-%M-%d-%m-%y
+        register: backup_date
+        
     - name: Dump database
-      shell: "mysqldump -u rolands tests10 > backup/tests12 - "+%H-%M-%d-%m-%y".sql"
+      shell: "mysqldump -u rolands tests10 > backup/tests10-{{ back_date.stdout }}.sql"
