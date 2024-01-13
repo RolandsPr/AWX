@@ -3,14 +3,10 @@
   hosts: 192.168.0.205
   become: yes
   tasks:
-    - name: Get the current date
-      shell: date +%H-%M-%d-%m-%y
-      register: backup_date
-
     - name: Create a backup directory
       file:
         path: /var/lib/mysql/backup
         state: directory
         
     - name: Dump database
-      shell: "mysqldump -u rolands tests10 > backup/tests10-{{ back_date.stdout }}.sql"
+      shell: "mysqldump -u rolands tests10 > backup/tests10-date "+%H:%M:%S %d/%m/%y".sql"
