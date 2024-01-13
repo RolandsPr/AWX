@@ -2,24 +2,23 @@
 - name: Create MySQL database backup
   hosts: 192.168.0.205
   become: yes
-  vars:
-    database_name: tests10
-    backup_directory: /var/lib/mysql/backup
-
   tasks:
-    - name: Create the backup directory
-      file:
-        path: "{{ backup_directory }}"
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
+    - name: Stop MySQL service
+      service:
+        name: mysql
+        state: stopped
 
-    - name: Backup MySQL database
-      copy:
-        src: /var/lib/mysql/{{ database_name }}
-        remote_src: yes
-        dest: "{{ backup_directory }}"
-        owner: root
-        group: root
-        mode: 0644
+    - name: Create a backup directory
+      file:
+        path: /var/lib/mysql/backup
+        state: directory
+
+    - name: Backup the tests10 database
+      mysqldump:
+        database: tests10
+        target: /var/lib/mysql/backup/tests10-$(date +%Y-%m-%d-%H-%M).sql
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
