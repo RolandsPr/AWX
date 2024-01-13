@@ -3,7 +3,7 @@
   become: true
   vars:
     database_name: tests10
-    backup_file: /var/lib/mysql/backup/tests10.sql
+    backup_file: /var/lib/mysql/backup/"{{ database_name }}".sql
 
   tasks:
     - name: Restore MySQL database
