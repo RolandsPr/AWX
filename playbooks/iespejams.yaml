@@ -12,11 +12,9 @@
       file:
         path: /var/lib/mysql/backup
         state: directory
-
-    - name: Copy database dump file
-      copy:
-        src: tests10.sql.bz2
-        dest: /var/lib/mysql/backup
+        
+    - name: Create MySQL database backup
+      command: sudo mysqldump -u root -p tests10 > /var/lib/mysql/backup/tests - "+%H-%M-%d-%m-%y".sql
 
     - name: Start MySQL service
       service:
