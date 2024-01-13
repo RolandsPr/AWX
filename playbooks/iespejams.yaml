@@ -20,11 +20,6 @@
         src: /var/lib/mysql/"{{ database_name }}"
         remote_src: yes
         dest: "{{ backup_directory }}"
-        register: backup_result
         owner: root
         group: root
         mode: 0644
-
-    - name: Check backup results
-      fail: msg="{{ backup_result.stderr }}"
-      when: backup_result.rc != 0
