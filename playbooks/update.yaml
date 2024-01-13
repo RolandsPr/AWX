@@ -1,28 +1,22 @@
 ---
-- name: Create MySQL database backup
+- name: Update and upgrade Ubuntu packages
   hosts: all
   become: yes
-  vars:
-    db_name: tests10
-    backup_dir: /backups
-
+  ignore_unreachable: yes
   tasks:
-    - name: Create backup file
-      copy:
-        content: "{{ lookup('template', './db_backup.sql') }}"
-        dest: "{{ backup_dir }}/{{ db_name }}_backup.sql"
+    - name: Update package cache
+      apt:
+        update_cache: yes
 
-    - name: Back up the database
-      mysql_db:
-        state: backup
-        db: "{{ db_name }}"
-        backup_path: "{{ backup_dir }}/{{ db_name }}_backup.sql"
-        owner: root
-        group: root
-        mode: 0600
-        
-  handlers:
-    - name: Restart MySQL server
-      service:
-        name: mysql
-        state: restarted
+    - name: Upgrade all packages
+      apt:
+        upgrade: yes
+
+- name: Reboot the server
+  hosts: all
+  become: yes
+  ignore_unreachable: yes
+  tasks:
+    - name: Reboot the server
+      reboot:
+        reboot_timeout: 3600
