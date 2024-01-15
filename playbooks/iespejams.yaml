@@ -9,4 +9,4 @@
         state: directory
         
     - name: Dump database
-      shell: "mysqldump -u rolands tests10 > backup/tests10.sql"
+      shell: "mysqldump -u rolands tests10 > backup/tests10- date ""+%Y+%M+%D"" .sql"
