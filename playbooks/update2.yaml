@@ -10,7 +10,16 @@
       upgrade: yes
       autoremove: yes
     register: updated_packages
+    
+  - name: Install MySQL server
+    apt: name=mysql-server state=present
 
+  - name: Start MySQL server
+    service: name=mysql state=started
+
+  - name: Enable MySQL server to start on boot
+    service: name=mysql enabled=yes
+    
   - name: Print updated packages
     debug:
       var: updated_packages.stdout_lines
